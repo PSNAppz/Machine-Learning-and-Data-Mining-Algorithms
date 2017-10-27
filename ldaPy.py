@@ -120,12 +120,5 @@ def build_rotationtree_model(k):
  	end = end + limit
 
 
-
-
-
-
 if __name__ == '__main__':
 	main()
-
-
-#PSO	
