@@ -104,6 +104,8 @@ def build_rotationtree_model(k):
  end = int(a/k)
  m = 0
  n = 0
+ e = 0
+ f = 0
  init = 0
   #Loop
  while(end <= a):
@@ -116,10 +118,15 @@ def build_rotationtree_model(k):
  	invPooled = np.array(lda(newArray))
  	for s in range(init,k):
  		for t in range(init,k):
- 			sparseMat[s][t] = invPooled[s][t]
+ 			print("E F",e,f)
+ 			sparseMat[s][t] = invPooled[e][f]
+ 			f = f + 1
+ 		e = e + 1
+ 		f = 0	
  	init = 	init + k	
  	print("init",init)
  	m = 0
+ 	e = 0
  	start = end
  	end = end + limit
  print("SPARSE")	
