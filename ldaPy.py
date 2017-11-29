@@ -1,160 +1,137 @@
 from __future__ import division
 import numpy as np
+from numpy import genfromtxt
+
 def main():
-	build_rotationtree_model(2)
+  build_rotationtree_model(2)
 
-def lda(newArray):
- Curvature = np.array(newArray)[:,0]
- Diameter = np.array(newArray)[:,1]  
- QCR = np.array([1,1,1,1,0,0,0])
- Mean_X1_A = 0
- Mean_X1_B = 0
- Mean_X2_A = 0
- Mean_X2_B = 0
- countX1 = 0
- countX2 = 0
- x=[[0 for x in range(2)] for y in range(len(newArray))]
- x1=[[0 for w in range(2)] for z in range(len(newArray))]
- x2=[[0 for e in range(2)] for q in range(len(newArray))]
- y2=[[0 for d in range(2)] for c in range(len(newArray))]
- y2=[[0 for u in range(2)] for y in range(len(newArray))]
- A1=[[0 for v in range(2)] for k in range(4)]
- A2=[[0 for f in range(2)] for j in range(3)]
 
- for i in range(len(Curvature)):
-   x[i][0]= Curvature[i]
-   x[i][1]= Diameter[i]
 
- for i in range(len(QCR)):
- 	if(QCR[i]==1):
- 		x1[i][0]=Curvature[i]
- 		x1[i][1]=Diameter[i]
- 	else:
- 		x2[i][0]=Curvature[i]
- 		x2[i][1]=Diameter[i]
+def LDA(newArray,mtx):
+  X = np.array(newArray)
+  columns = mtx.shape[1]
+  columns -= 1
+  rows = mtx.shape[0]
+  nCol = X.shape[1]
+  Y = np.array(mtx)[:,columns]
+  Mean_X1= [0 for a in range(nCol)]
+  Mean_X2= [0 for b in range(nCol)]
+  countX1 = 0
+  countX2 = 0
+  x1=[[0 for w in range(X.shape[1])] for z in range(rows)]
+  x2=[[0 for e in range(X.shape[1])] for q in range(rows)]
+  GlobalMean = [0 for a in range(nCol)]
+  for i in range(rows):
+    if(mtx[i][columns]==1):
+      for j in range(nCol):
+        x1[i][j] = X[i][j]
+    else:
+       for k in range(nCol):
+         x2[i][k] = X[i][k]
+  #MEAN
+  for i in range(nCol):
+    for j in range(rows):
+      if(mtx[j][columns]==1):
+        Mean_X1[i] +=x1[j][i]
+        countX1+=1
+      else:
+        Mean_X2[i]+=x2[j][i]
+        countX2+=1  
+  #Global Mean
+  for j in range(nCol):
+    Mean_X1[j]/= countX1
+    Mean_X2[j]/= countX2   
+  for k in range(nCol):
+    GlobalMean[k] = (Mean_X1[k] + Mean_X2[k])/2
+  #print("MEAN",GlobalMean) 
+  for i in range(nCol):
+    for j in range(rows):
+      if(mtx[j][columns] == 1):
+        x1[j][i] -= GlobalMean[i]   
+      else:
+        x2[j][i] -= GlobalMean[i]
+  A1=[[0 for v in range(nCol)] for k in range(countX1)]
+  A2=[[0 for f in range(nCol)] for j in range(countX2)]     
+  for i in range(rows):
+    if(mtx[i][columns]==1):
+      for j in range(nCol):
+        A1[i][j] = X[i][j]
+    else:
+       for k in range(nCol):
+         A2[i][k] = X[i][k]
+               
+  TransMat_A = np.asarray(A1)
+  TransMat_B = np.asarray(A2)
+  CovMat_A = np.cov(np.matrix.transpose(TransMat_A))
+  CovMat_B = np.cov(np.matrix.transpose(TransMat_B))     
+  pooled =[[0 for f in range(len(CovMat_A))] for j in range(len(CovMat_A))]
+  for i in range(len(CovMat_A)):
+    for j in range(len(CovMat_A)):
+      pooled[i][j]=(countX1/(countX1+countX2))*CovMat_A[i][j]+(countX2/(countX1+countX2))*CovMat_B[i][j]
+  invPooled = [[0 for r in range(len(CovMat_A))] for i in range(len(CovMat_A))]
+  invPooled = np.matrix(pooled).I
+  return invPooled
 
-#Mean of each attribute
- for i in range(len(QCR)):
-	if(QCR[i]==1):
-		Mean_X1_A+=x1[i][0]
-		Mean_X1_B+=x1[i][1]
-		countX1+=1
-	else:
-		Mean_X2_A+=x2[i][0]
-		Mean_X2_B+=x2[i][1]
-		countX2+=1	
-
- Mean_X1_A/=countX1
- Mean_X1_B/=countX1
- Mean_X2_A/=countX2
- Mean_X2_B/=countX2		
-
- GlobalMean_A=(Mean_X1_A + Mean_X2_A)/2
- GlobalMean_B=(Mean_X1_B + Mean_X2_B)/2
-
- #Subtraction of global mean from each of data dimensions.
- for i in range(len(QCR)):
- 	if(QCR[i]==1):
- 		x1[i][0]-=GlobalMean_A
- 		x1[i][1]-=GlobalMean_B
- 	else:
- 		x2[i][0]-=GlobalMean_A
- 		x2[i][1]-=GlobalMean_B
- a=0 
- b=0		
- for i in range(len(QCR)):
- 	if(QCR[i]==1):
- 		A1[b][0]= x1[i][0]
- 		A1[b][1]= x1[i][1]
- 		b+=1 		
-
- 	else:
- 		A2[a][0]= x2[i][0]
-  		A2[a][1]= x2[i][1]
-  		a+=1
- TransMat_A = np.asarray(A1)
- TransMat_B = np.asarray(A2)
- CovMat_A = np.cov(np.matrix.transpose(TransMat_A))
- CovMat_B = np.cov(np.matrix.transpose(TransMat_B))
-
- pooled =[[0 for f in range(len(CovMat_A))] for j in range(len(CovMat_A))]
- for i in range(len(CovMat_A)):
- 	for j in range(len(CovMat_A)):
- 		pooled[i][j]=(countX1/(countX1+countX2))*CovMat_A[i][j]+(countX2/(countX1+countX2))*CovMat_B[i][j]
- invPooled = [[0 for r in range(len(CovMat_A))] for i in range(len(CovMat_A))]
- invPooled = np.matrix(pooled).I
- print (invPooled)
- return invPooled
+ 
 
  
 def build_rotationtree_model(k):
- mtx =np.array([[2.95,6,63,23],[2,53,7,79],[3.57,5,65,32],[3.16,5,47,34],[21,2.58,4,46],[3.1,2.16,6,22],[3.5,3.27,3,52],[12,2.56,4,41]])	
- #Length of attributes (width of matrix)
- a = mtx.shape[1]
- newArray =[[0 for x in range(k)] for y in range(len(mtx))]
- #Height of matrix(total rows)
- b = mtx.shape[0]
- #Sparse matrix
- sparseMat = np.zeros([a,a])
- #Seperation limit
- limit = int(a/k)
- #Starting of sub matrix
- start = 0
- #Ending of sub matrix
- end = int(a/k)
- m = 0
- n = 0
- pos = 0
+  mtx = genfromtxt('manu.csv', delimiter=',')
+  #Length of attributes (width of matrix)
+  a = mtx.shape[1] 
+  a -= 1
+  #Seperation limit
+  limit = int(a/k)
+  newArray =[[0 for x in range(limit)] for y in range(len(mtx))]
+  #Height of matrix(total rows)
+  b = mtx.shape[0]
+  #Sparse matrix
+  sparseMat = [[0 for x in range(a)] for y in range(a)]
+  #Starting of sub matrix
+  start = 0
+  #Ending of sub matrix
+  end = int(a/k)
+  cond = end
+  m = 0
+  n = 0
+  pos = 0
+  counter = 0
   #Loop
- while(end <= a):
- 	for i in range(0,b):
- 		for j in range(start,end):
- 			newArray[m][n] = mtx[i][j]
- 			n = 1
- 		m=m+1
- 		n=0
- 	invPooled = np.array(lda(newArray))	
- 	sparse(pos,invPooled,k,sparseMat)
- 	pos = pos + k
- 	m = 0
- 	start = end
- 	end = end + limit
- print("SPARSE")	
- a = np.matrix(mtx)
- b = np.matrix(sparseMat)
- print(a*b)    
+  while(counter < k):
+      counter += 1
+      for i in range(0,b):
+          for j in range(start,end):
+              newArray[m][n] = mtx[i][j]
+              n = n+1
+          m=m+1
+          n=0
+      invPooled = np.array(LDA(newArray,mtx)) 
+      sparse(pos,invPooled,limit,sparseMat)
+      pos = pos + limit
+      m = 0
+      start = end
+      end = end + limit 
+  originMTX = np.delete(mtx,a,axis=1)
+  sparseMat = np.matrix(sparseMat)
+  print(originMTX * sparseMat)    
 
 
 
 
-def sparse(pos,invPooled,k,sparseMat):
-	e = pos
- 	f = pos
-	init = 0
-	for s in range(init,k):
- 		for t in range(init,k):
- 			sparseMat[e][f] = invPooled[s][t]
- 			print("EF",e,f)
- 			f = f+ 1
- 		e = e + 1
- 		f = pos
- 		print("Break")
- 	init = 	init + k
- 	e = 0
- 	return sparseMat	
+def sparse(pos,invPooled,limit,sparseMat):
+  e = pos
+  f = pos
+  for s in range(limit):
+    for t in range(limit):
+      sparseMat[e][f] = invPooled[s][t]
+      f = f+ 1
+    e = e + 1
+    f = pos
+  return sparseMat  
 
  
 
 
 
 if __name__ == '__main__':
-	main()
-
-
-#random subspace
-
-
-
-
-
-#subspacious
+  main()
