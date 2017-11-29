@@ -76,7 +76,7 @@ def LDA(newArray,mtx):
 
  
 def build_rotationtree_model(k):
-  mtx = genfromtxt('manu.csv', delimiter=',')
+  mtx = genfromtxt('heart.csv', delimiter=',')
   #Length of attributes (width of matrix)
   a = mtx.shape[1] 
   a -= 1
