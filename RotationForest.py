@@ -3,7 +3,8 @@ import numpy as np
 from numpy import genfromtxt
 
 def main():
-  build_rotationtree_model(13)
+  k=int(input("Enter the value for k: "))
+  build_rotationtree_model(k)
 
 
 
