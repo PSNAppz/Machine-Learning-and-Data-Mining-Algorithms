@@ -1,6 +1,3 @@
-# Rotation-Forest-Python-with-LDA
-## Python Implementation of Rotation Forest Algorithm with LDA classifier
+# Machine Learning Algorithms
+## Python Implementation of Machine Learning Algorithms
 
-`Run :python3 RotationForest.py`
-
-`DataSet : UCI Heart Disease`

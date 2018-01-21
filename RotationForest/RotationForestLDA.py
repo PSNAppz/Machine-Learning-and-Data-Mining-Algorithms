@@ -2,10 +2,14 @@ from __future__ import division
 import numpy as np
 from numpy import genfromtxt
 
+nArray = 0
+mtx = 0
 def main():
+  float_formatter = lambda x: "%.2f" % x
+  np.set_printoptions(formatter={'float_kind':float_formatter})
+  np.set_printoptions(threshold='nan')
   k=int(input("Enter the value for k: "))
   build_rotationtree_model(k)
-
 
 
 def LDA(newArray,mtx):
@@ -36,7 +40,6 @@ def LDA(newArray,mtx):
         Mean_X1[i] +=x1[j][i]
       else:
         Mean_X2[i]+=x2[j][i]
-
   for j in range(rows):
     if(mtx[j][columns]==1):
       countX1+=1
@@ -46,7 +49,7 @@ def LDA(newArray,mtx):
   #Global Mean
   for j in range(nCol):
     Mean_X1[j]/= countX1
-    Mean_X2[j]/= countX2   
+    Mean_X2[j]/= countX2 
   for k in range(nCol):
     GlobalMean[k] = (Mean_X1[k] + Mean_X2[k])/2
   #print("MEAN",GlobalMean) 
@@ -63,11 +66,11 @@ def LDA(newArray,mtx):
   for i in range(rows):
     if(mtx[i][columns]==1):
       for j in range(nCol):
-         A1[x][j] = X[i][j]
+         A1[x][j] = x1[i][j]
       x+=1
     else:
       for k in range(nCol):
-         A2[y][k] = X[i][k]
+         A2[y][k] = x2[i][k]
       y+=1
   TransMat_A = np.asarray(A1)
   TransMat_B = np.asarray(A2)
@@ -89,7 +92,7 @@ def LDA(newArray,mtx):
 
  
 def build_rotationtree_model(k):
-  mtx = genfromtxt('heart.csv', delimiter=',')
+  mtx = genfromtxt('../Dataset/heart.data', delimiter=',')
   #Length of attributes (width of matrix)
   a = mtx.shape[1] 
   a -= 1
@@ -123,7 +126,7 @@ def build_rotationtree_model(k):
           for j in range(start,end):
               newArray[i][n] = mtx[i][j]
               n = n+1    
-          n=0
+          n=0       
       invPooled = np.array(LDA(newArray,mtx)) 
       sparse(pos,invPooled,limit,sparseMat,ext,add)
       pos = pos + limit
@@ -131,7 +134,12 @@ def build_rotationtree_model(k):
       end = end + limit 
   originMTX = np.delete(mtx,a,axis=1)
   sparseMat = np.matrix(sparseMat)
-  print(originMTX * sparseMat)    
+  result = np.array(originMTX * sparseMat)
+  Ycol = np.array(mtx)[:,a]
+  result = result.round(decimals = 2)
+  final = np.concatenate((result,Ycol.reshape(Ycol.shape[0],1).astype(int)),axis=1)
+  np.savetxt("../Dataset/LDAdata.csv",final,fmt='%10.2f',delimiter=",")
+  #print(final)
 
 
 
