@@ -9,7 +9,7 @@ def main():
 	testSet=[]
 	accuracy = 0.0
 	split = 0.25
-	loadDataset('Dataset/heart.data', split, trainingSet, testSet)
+	loadDataset('Dataset/phishing.data', split, trainingSet, testSet)
 	print 'Train set: ' + repr(len(trainingSet))
 	print 'Test set: ' + repr(len(testSet))
 	# generate predictions

@@ -1,4 +1,3 @@
-# Example of Naive Bayes implemented from Scratch in Python
 import csv
 import random
 import math
@@ -86,7 +85,7 @@ def getAccuracy(testSet, predictions):
 	return (correct/float(len(testSet))) * 100.0
 
 def main():
-	filename = 'Dataset/heart.data'
+	filename = 'Dataset/phishing.data'
 	splitRatio = 0.25
 	dataset = loadCsv(filename)
 	trainingSet, testSet = splitDataset(dataset, splitRatio)
