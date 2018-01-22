@@ -158,7 +158,7 @@ def decision_tree(train, test, max_depth, min_size):
 # Test CART on Bank Note dataset
 seed(1)
 # load and prepare data
-filename = 'Dataset/phishing.data'
+filename = 'Dataset/sonar.data'
 dataset = load_csv(filename)
 # convert string attributes to integers
 for i in range(len(dataset[0])):

@@ -57,8 +57,8 @@ def main():
 	# prepare data
 	trainingSet=[]
 	testSet=[]
-	split = 0.67
-	loadDataset('../Dataset/heart.data', split, trainingSet, testSet)
+	split = 0.25
+	loadDataset('../Dataset/sonar.data', split, trainingSet, testSet)
 	print 'Train set: ' + repr(len(trainingSet))
 	print 'Test set: ' + repr(len(testSet))
 	# generate predictions

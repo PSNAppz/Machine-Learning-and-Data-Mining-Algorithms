@@ -190,7 +190,7 @@ def bagging(train, test, max_depth, min_size, sample_size, n_trees):
 # Test bagging on the sonar dataset
 seed(1)
 # load and prepare data
-filename = 'Dataset/phishing.data'
+filename = 'Dataset/LDAdata.csv'
 dataset = load_csv(filename)
 # convert string attributes to integers
 for i in range(len(dataset[0])-1):
@@ -198,8 +198,8 @@ for i in range(len(dataset[0])-1):
 # convert class column to integers
 str_column_to_int(dataset, len(dataset[0])-1)
 # evaluate algorithm
-n_folds = 10
-max_depth = 20
+n_folds = 5
+max_depth = 10
 min_size = 5
 sample_size = 0.25
 for n_trees in [200]:
