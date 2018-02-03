@@ -10,7 +10,7 @@ def main():
 	testSet=[]
 	accuracy = 0.0
 	split = 0.25
-	loadDataset('../Dataset/iris.data', split, trainingSet, testSet)
+	loadDataset('../Dataset/med.data', split, trainingSet, testSet)
 	print 'Train set: ' + repr(len(trainingSet))
 	print 'Test set: ' + repr(len(testSet))
 	# generate predictions
