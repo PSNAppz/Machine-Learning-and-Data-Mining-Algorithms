@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 import csv
 import random
 
@@ -18,7 +18,7 @@ def main():
   	columns = trainData.shape[1] 
 	X = np.array(trainData)
 	y = np.array(trainingSet)[:,columns]
-	clf = AdaBoostClassifier()
+	clf = GradientBoostingClassifier()
 	clf.fit(X, y)
 	testData = np.array(testSet)[:,0:np.array(trainingSet).shape[1] - 1]
 	X_test = np.array(testData)
