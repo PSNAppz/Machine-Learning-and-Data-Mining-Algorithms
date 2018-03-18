@@ -1,3 +1,3 @@
-# Machine Learning Algorithms
-## Python Implementation of Machine Learning Algorithms
+# Machine Learning & Data Mining Algorithms
+## Python Implementation of Machine Learning and Data MiningAlgorithms
 
