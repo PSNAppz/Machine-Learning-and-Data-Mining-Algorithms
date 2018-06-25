@@ -1,152 +1,104 @@
-'''
+import numpy as np 
+import seaborn as sns
+import pandas as pd 
+import pyswarms as ps 
 
-For each particle 
-	Initialize particle
-END
+from sklearn import linear_model
+from sklearn.datasets import make_classification
+X, y = make_classification(n_samples=100, n_features=15, n_classes=3,
+                           n_informative=4, n_redundant=1, n_repeated=2,
+                           random_state=1)
 
-Do
-	For each particle 
-		Calculate fitness value
-		If the fitness value is better than its peronal best
-			set current value as the new pBest
-	End
+# Plot toy dataset per feature
+df = pd.DataFrame(X)
+df['labels'] = pd.Series(y)
 
-	Choose the particle with the best fitness value of all as gBest
-	For each particle 
-		Calculate particle velocity according equation (a)
-		Update particle position according equation (b)
-	End 
-While maximum iterations or minimum error criteria is not attained
+sns.pairplot(df, hue='labels');                           
 
-Equation (a)
 
-v[] = c0 *v[] 
-     + c1 * rand() * (pbest[] - present[])   
-     + c2 * rand() * (gbest[] - present[])    
-(in the original method, c0=1, but many
-     researchers now play with this parameter)
+# Create an instance of the classifier
+classifier = linear_model.LogisticRegression()
 
-Equation (b)
+# Define objective function
+def f_per_particle(m, alpha):
+    """Computes for the objective function per particle
 
-present[] = present[] + v[] 
+    Inputs
+    ------
+    m : numpy.ndarray
+        Binary mask that can be obtained from BinaryPSO, will
+        be used to mask features.
+    alpha: float (default is 0.5)
+        Constant weight for trading-off classifier performance
+        and number of features
 
-'''
+    Returns
+    -------
+    numpy.ndarray
+        Computed objective function
+    """
 
-#------------------------------------------------------------------------------+
-#
-#   Simple Particle Swarm Optimization (PSO) with Python
-#
-#------------------------------------------------------------------------------+
+    total_features = 15
+    # Get the subset of the features from the binary mask
+    if np.count_nonzero(m) == 0:
+        X_subset = X
+    else:
+        X_subset = X[:,m==1]
+    # Perform classification and store performance in P
+    classifier.fit(X_subset, y)
+    P = (classifier.predict(X_subset) == y).mean()
+    # Compute for the objective function
+    j = (alpha * (1.0 - P)
+        + (1.0 - alpha) * (1 - (X_subset.shape[1] / total_features)))
 
-#--- IMPORT DEPENDENCIES ------------------------------------------------------+
+    return j
 
-from __future__ import division
-import random
-import math
+def f(x, alpha=0.88):
+    """Higher-level method to do classification in the
+    whole swarm.
 
-#--- COST FUNCTION ------------------------------------------------------------+
+    Inputs
+    ------
+    x: numpy.ndarray of shape (n_particles, dimensions)
+        The swarm that will perform the search
 
-# function we are attempting to optimize (minimize)
-def func1(x):
-    total=0
-    for i in range(len(x)):
-        total+=x[i]**2
-    return total
+    Returns
+    -------
+    numpy.ndarray of shape (n_particles, )
+        The computed loss for each particle
+    """
+    n_particles = x.shape[0]
+    j = [f_per_particle(x[i], alpha) for i in range(n_particles)]
+    return np.array(j)
 
-#--- MAIN ---------------------------------------------------------------------+
+    # Initialize swarm, arbitrary
+options = {'c1': 0.5, 'c2': 0.5, 'w':0.9, 'k': 30, 'p':2}
 
-class Particle:
-    def __init__(self,x0):
-        self.position_i=[]          # particle position
-        self.velocity_i=[]          # particle velocity
-        self.pos_best_i=[]          # best position individual
-        self.err_best_i=-1          # best error individual
-        self.err_i=-1               # error individual
+# Call instance of PSO
+dimensions = 15 # dimensions should be the number of features
+optimizer = ps.discrete.BinaryPSO(n_particles=30, dimensions=dimensions, options=options)
 
-        for i in range(0,num_dimensions):
-            self.velocity_i.append(random.uniform(-1,1))
-            self.position_i.append(x0[i])
+# Perform optimization
+cost, pos = optimizer.optimize(f, print_step=100, iters=1000, verbose=2)
 
-    # evaluate current fitness
-    def evaluate(self,costFunc):
-        self.err_i=costFunc(self.position_i)
+# Create two instances of LogisticRegression
+classfier = linear_model.LogisticRegression()
 
-        # check to see if the current position is an individual best
-        if self.err_i < self.err_best_i or self.err_best_i==-1:
-            self.pos_best_i=self.position_i
-            self.err_best_i=self.err_i
+# Get the selected features from the final positions
+X_selected_features = X[:,pos==1]  # subset
 
-    # update new particle velocity
-    def update_velocity(self,pos_best_g):
-        w=0.5       # constant inertia weight (how much to weigh the previous velocity)
-        c1=1        # cognative constant
-        c2=2        # social constant
+# Perform classification and store performance in P
+classifier.fit(X_selected_features, y)
 
-        for i in range(0,num_dimensions):
-            r1=random.random()
-            r2=random.random()
+# Compute performance
+subset_performance = (classifier.predict(X_selected_features) == y).mean()
 
-            vel_cognitive=c1*r1*(self.pos_best_i[i]-self.position_i[i])
-            vel_social=c2*r2*(pos_best_g[i]-self.position_i[i])
-            self.velocity_i[i]=w*self.velocity_i[i]+vel_cognitive+vel_social
 
-    # update the particle position based off new velocity updates
-    def update_position(self,bounds):
-        for i in range(0,num_dimensions):
-            self.position_i[i]=self.position_i[i]+self.velocity_i[i]
+print('Subset performance: %.3f' % (subset_performance))
 
-            # adjust maximum position if necessary
-            if self.position_i[i]>bounds[i][1]:
-                self.position_i[i]=bounds[i][1]
+# Plot toy dataset per feature
+df1 = pd.DataFrame(X_selected_features)
+df1['labels'] = pd.Series(y)
 
-            # adjust minimum position if neseccary
-            if self.position_i[i] < bounds[i][0]:
-                self.position_i[i]=bounds[i][0]
-                
-class PSO():
-    def __init__(self,costFunc,x0,bounds,num_particles,maxiter):
-        global num_dimensions
+sns.pairplot(df1, hue='labels')
 
-        num_dimensions=len(x0)
-        err_best_g=-1                   # best error for group
-        pos_best_g=[]                   # best position for group
-
-        # establish the swarm
-        swarm=[]
-        for i in range(0,num_particles):
-            swarm.append(Particle(x0))
-
-        # begin optimization loop
-        i=0
-        while i < maxiter:
-            #print i,err_best_g
-            # cycle through particles in swarm and evaluate fitness
-            for j in range(0,num_particles):
-                swarm[j].evaluate(costFunc)
-
-                # determine if current particle is the best (globally)
-                if swarm[j].err_i < err_best_g or err_best_g == -1:
-                    pos_best_g=list(swarm[j].position_i)
-                    err_best_g=float(swarm[j].err_i)
-
-            # cycle through swarm and update velocities and position
-            for j in range(0,num_particles):
-                swarm[j].update_velocity(pos_best_g)
-                swarm[j].update_position(bounds)
-            i+=1
-
-        # print final results
-        print 'FINAL:'
-        print pos_best_g
-        print err_best_g
-
-if __name__ == "__PSO__":
-    main()
-
-#--- RUN ----------------------------------------------------------------------+
-
-initial=[5,5]               # initial starting location [x1,x2...]
-bounds=[(-10,10),(-10,10)]  # input bounds [(x1_min,x1_max),(x2_min,x2_max)...]
-PSO(func1,initial,bounds,num_particles=115,maxiter=30)
-
-#--- END ----------------------------------------------------------------------+
