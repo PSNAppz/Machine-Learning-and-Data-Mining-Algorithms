@@ -10,7 +10,7 @@ def main():
 	testSet=[]
 	accuracy = 0.0
 	split = 0.25
-	loadDataset('../Dataset/sonar.data', split, trainingSet, testSet)
+	loadDataset('../Dataset/combined.csv', split, trainingSet, testSet)
 	print 'Train set: ' + repr(len(trainingSet))
 	print 'Test set: ' + repr(len(testSet))
 	# generate predictions
@@ -19,7 +19,7 @@ def main():
   	columns = trainData.shape[1] 
 	X = np.array(trainData)
 	y = np.array(trainingSet)[:,columns]
-	clf = BaggingClassifier(KNN(n_neighbors=10, weights='uniform', algorithm='auto', leaf_size=30, p=1, metric='minkowski', metric_params=None, n_jobs=1))
+	clf = BaggingClassifier(KNN(n_neighbors=10, weights='uniform', algorithm='auto', leaf_size=10, p=1, metric='minkowski', metric_params=None, n_jobs=1))
 	clf.fit(X, y)
 	testData = np.array(testSet)[:,0:np.array(trainingSet).shape[1] - 1]
 	X_test = np.array(testData)

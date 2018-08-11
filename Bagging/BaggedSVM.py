@@ -10,7 +10,7 @@ def main():
 	testSet=[]
 	accuracy = 0.0
 	split = 0.25
-	loadDataset('../Dataset/med.data', split, trainingSet, testSet)
+	loadDataset('../Dataset/combined.csv', split, trainingSet, testSet)
 	print 'Train set: ' + repr(len(trainingSet))
 	print 'Test set: ' + repr(len(testSet))
 	# generate predictions
@@ -19,7 +19,7 @@ def main():
   	columns = trainData.shape[1] 
 	X = np.array(trainData)
 	y = np.array(trainingSet)[:,columns]
-	clf = BaggingClassifier(SVC(C=1.0, kernel='linear', degree=3, gamma='auto', coef0=0.0, shrinking=True, probability=False,tol=0.001, cache_size=200, class_weight=None, verbose=False, max_iter=-1, random_state=None))
+	clf = BaggingClassifier(SVC(C=1.0, kernel='linear', degree=5, gamma='auto', coef0=0.0, shrinking=True, probability=False,tol=0.001, cache_size=200, class_weight=None, verbose=False, max_iter=-1, random_state=None))
 	clf.fit(X, y)
 	testData = np.array(testSet)[:,0:np.array(trainingSet).shape[1] - 1]
 	X_test = np.array(testData)

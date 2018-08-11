@@ -58,7 +58,7 @@ def main():
 	trainingSet=[]
 	testSet=[]
 	split = 0.25
-	loadDataset('../Dataset/sonar.data', split, trainingSet, testSet)
+	loadDataset('../Dataset/combined.csv', split, trainingSet, testSet)
 	print 'Train set: ' + repr(len(trainingSet))
 	print 'Test set: ' + repr(len(testSet))
 	# generate predictions

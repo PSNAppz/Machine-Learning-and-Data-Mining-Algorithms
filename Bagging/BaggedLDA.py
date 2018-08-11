@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.ensemble import BaggingClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 import csv
 import random
@@ -9,20 +10,20 @@ def main():
 	testSet=[]
 	accuracy = 0.0
 	split = 0.25
-	loadDataset('Dataset/combined.csv', split, trainingSet, testSet)
+	loadDataset('../Dataset/combined.csv', split, trainingSet, testSet)
 	print 'Train set: ' + repr(len(trainingSet))
 	print 'Test set: ' + repr(len(testSet))
 	# generate predictions
 	predictions=[]
 	trainData = np.array(trainingSet)[:,0:np.array(trainingSet).shape[1] - 1]
   	columns = trainData.shape[1] 
-	X = np.array(trainData).astype(np.float)
-	y = np.array(trainingSet)[:,columns].astype(np.float)
-	clf = LDA()
+	X = np.array(trainData)
+	y = np.array(trainingSet)[:,columns]
+	clf = BaggingClassifier(LDA())
 	clf.fit(X, y)
 	testData = np.array(testSet)[:,0:np.array(trainingSet).shape[1] - 1]
-	X_test = np.array(testData).astype(np.float)
-	y_test = np.array(testSet)[:,columns].astype(np.float)
+	X_test = np.array(testData)
+	y_test = np.array(testSet)[:,columns]
 	accuracy = clf.score(X_test,y_test)
 	accuracy *= 100
 	print("Accuracy %:",accuracy)	

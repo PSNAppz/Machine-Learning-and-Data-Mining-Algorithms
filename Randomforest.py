@@ -199,7 +199,7 @@ for i in range(len(dataset[0])-1):
 str_column_to_int(dataset, len(dataset[0])-1)
 # evaluate algorithm
 n_folds = 5
-max_depth = 10
+max_depth = 15
 min_size = 5
 sample_size = 0.25
 for n_trees in [200]:

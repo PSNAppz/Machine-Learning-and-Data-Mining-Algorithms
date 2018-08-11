@@ -1,24 +1,37 @@
 import numpy as np 
-import seaborn as sns
 import pandas as pd 
 import pyswarms as ps 
-
+import csv
+import random
+from numpy import genfromtxt
 from sklearn import linear_model
 from sklearn.datasets import make_classification
-X, y = make_classification(n_samples=100, n_features=15, n_classes=3,
-                           n_informative=4, n_redundant=1, n_repeated=2,
-                           random_state=1)
+np.set_printoptions(threshold=np.nan)
 
-# Plot toy dataset per feature
-df = pd.DataFrame(X)
-df['labels'] = pd.Series(y)
+# Load data from the given benchmarked datasets
+def loadDataset(filename,testSet=[]):
+    with open(filename, 'r') as csvfile:
+        lines = csv.reader(csvfile)
+        dataset = list(lines)
+        for x in range(len(dataset)):
+            for y in range(np.array(dataset).shape[1]):
+                dataset[x][y] = float(dataset[x][y])
+                testSet.append(dataset[x])
+            
 
-sns.pairplot(df, hue='labels');                           
 
+#trainingSet=[]
+testSet=[]
+#split = 0.25
+loadDataset('Dataset/heart.data',testSet)
+mtx = genfromtxt('Dataset/heart.data', delimiter=',')
+trainData = np.array(testSet)[:,0:np.array(testSet).shape[1] - 1]
+columns = trainData.shape[1] 
+X = np.array(trainData).astype(np.float)
+y = np.array(testSet)[:,columns].astype(np.float)
 
 # Create an instance of the classifier
-classifier = linear_model.LogisticRegression()
-
+#classifier = linear_model.LogisticRegression()
 # Define objective function
 def f_per_particle(m, alpha):
     """Computes for the objective function per particle
@@ -38,7 +51,7 @@ def f_per_particle(m, alpha):
         Computed objective function
     """
 
-    total_features = 15
+    total_features = 13
     # Get the subset of the features from the binary mask
     if np.count_nonzero(m) == 0:
         X_subset = X
@@ -73,9 +86,8 @@ def f(x, alpha=0.88):
 
     # Initialize swarm, arbitrary
 options = {'c1': 0.5, 'c2': 0.5, 'w':0.9, 'k': 30, 'p':2}
-
 # Call instance of PSO
-dimensions = 15 # dimensions should be the number of features
+dimensions = 13 # dimensions should be the number of features
 optimizer = ps.discrete.BinaryPSO(n_particles=30, dimensions=dimensions, options=options)
 
 # Perform optimization
@@ -93,12 +105,11 @@ classifier.fit(X_selected_features, y)
 # Compute performance
 subset_performance = (classifier.predict(X_selected_features) == y).mean()
 
-
 print('Subset performance: %.3f' % (subset_performance))
+Ycol = np.array(mtx)[:,dimensions]
 
-# Plot toy dataset per feature
-df1 = pd.DataFrame(X_selected_features)
-df1['labels'] = pd.Series(y)
+#X_selected_features = np.concatenate((X_selected_features,Ycol.reshape(Ycol.shape[0],1).astype(int)),axis=1)
+np.savetxt("Dataset/PSOData.csv",X_selected_features,fmt='%10.2f',delimiter=",")
 
-sns.pairplot(df1, hue='labels')
+
 
