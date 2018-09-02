@@ -10,3 +10,4 @@
 * LDA
 * NAIVE BAYES
 * PSO
+* QDA
