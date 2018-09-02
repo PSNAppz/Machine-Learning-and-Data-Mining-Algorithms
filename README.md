@@ -1,5 +1,5 @@
 # Machine Learning & Data Mining Algorithms
-## Python Implementation of Machine Learning and Data Mining Algorithms
+Python Implementation of Machine Learning and Data Mining Algorithms
 
 # Implemented Algorithms 
 
