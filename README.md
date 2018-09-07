@@ -13,3 +13,4 @@ Python Implementation of Machine Learning and Data Mining Algorithms
 * QDA
 * DECISION TREE
 * KNN
+* ENSEMBLE METHODS
