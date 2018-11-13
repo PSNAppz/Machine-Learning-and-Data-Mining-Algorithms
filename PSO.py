@@ -1,11 +1,9 @@
 import numpy as np 
-import pandas as pd 
 import pyswarms as ps 
 import csv
 import random
 from numpy import genfromtxt
 from sklearn import linear_model
-from sklearn.datasets import make_classification
 np.set_printoptions(threshold=np.nan)
 
 # Load data from the given benchmarked datasets
@@ -31,7 +29,7 @@ X = np.array(trainData).astype(np.float)
 y = np.array(testSet)[:,columns].astype(np.float)
 
 # Create an instance of the classifier
-#classifier = linear_model.LogisticRegression()
+classifier = linear_model.LogisticRegression()
 # Define objective function
 def f_per_particle(m, alpha):
     """Computes for the objective function per particle
@@ -56,7 +54,7 @@ def f_per_particle(m, alpha):
     if np.count_nonzero(m) == 0:
         X_subset = X
     else:
-        X_subset = X[:,m==1]
+        X_subset = X[:,m==1]    
     # Perform classification and store performance in P
     classifier.fit(X_subset, y)
     P = (classifier.predict(X_subset) == y).mean()
@@ -94,7 +92,7 @@ optimizer = ps.discrete.BinaryPSO(n_particles=30, dimensions=dimensions, options
 cost, pos = optimizer.optimize(f, print_step=100, iters=1000, verbose=2)
 
 # Create two instances of LogisticRegression
-classfier = linear_model.LogisticRegression()
+classifier = linear_model.LogisticRegression()
 
 # Get the selected features from the final positions
 X_selected_features = X[:,pos==1]  # subset
