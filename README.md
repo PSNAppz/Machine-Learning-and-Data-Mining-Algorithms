@@ -14,3 +14,7 @@ Python Implementation of Machine Learning and Data Mining Algorithms
 * DECISION TREE
 * KNN
 * ENSEMBLE METHODS
+ - Bagging
+ - Ada Boost
+ - Gradient Boost
+ - XG Boost
