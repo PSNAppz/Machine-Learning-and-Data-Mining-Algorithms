@@ -86,6 +86,7 @@ def LDA(newArray,mtx):
       pooled[i][j] = (countX1/(countX1+countX2))*covA[i][j]+(countX2/(countX1+countX2))*covB[i][j]
   invPooled = [[0 for r in range(len(CovMat_A))] for i in range(len(CovMat_A))]
   invPooled = np.matrix(pooled).I
+  print(pooled)
   return invPooled
 
  
