@@ -10,6 +10,9 @@ Python Implementation of Machine Learning and Data Mining Algorithms
 * LDA
 * NAIVE BAYES
 * PSO
+* Feature Selection
+ - Random Forest
+ - BPSO
 * QDA
 * DECISION TREE
 * KNN
