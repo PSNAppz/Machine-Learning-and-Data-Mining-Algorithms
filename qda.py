@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as LDA
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 import csv
 import random
 
@@ -18,7 +18,7 @@ def main():
   	columns = trainData.shape[1] 
 	X = np.array(trainData).astype(np.float)
 	y = np.array(trainingSet)[:,columns].astype(np.float)
-	clf = LDA()
+	clf = QDA()
 	clf.fit(X, y)
 	testData = np.array(testSet)[:,0:np.array(trainingSet).shape[1] - 1]
 	X_test = np.array(testData).astype(np.float)

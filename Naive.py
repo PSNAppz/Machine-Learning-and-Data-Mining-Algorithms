@@ -9,7 +9,7 @@ def main():
 	testSet=[]
 	accuracy = 0.0
 	split = 0.25
-	loadDataset('Dataset/comb.csv', split, trainingSet, testSet)
+	loadDataset('Dataset/temphumidity.csv', split, trainingSet, testSet)
 	print 'Train set: ' + repr(len(trainingSet))
 	print 'Test set: ' + repr(len(testSet))
 	# generate predictions
@@ -25,6 +25,7 @@ def main():
 	y_test = np.array(testSet)[:,columns].astype(np.float)
 	accuracy = clf.score(X_test,y_test)
 	accuracy *= 100
+	print(clf.predict([[1996,8,27]]))
 	print("Accuracy %:",accuracy)	
 
 

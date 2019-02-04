@@ -5,7 +5,7 @@ from sklearn.svm import SVC
 COMPONENT_NUM = 2
 
 print('Read training data...')
-with open('Dataset/bcancer.data', 'r') as reader:
+with open('Dataset/temphumidity.csv', 'r') as reader:
     reader.readline()
     train_label = []
     train_data = []
@@ -42,7 +42,6 @@ print('Predicting...')
 from sklearn.metrics import accuracy_score
 predict = svc.predict(X_test)
 acc=accuracy_score(predict,y_test)
-acc *= 10000
 print ("Accuracy % : ",acc)
 #print('Saving...')
 #with open('predict.csv', 'w') as writer:
