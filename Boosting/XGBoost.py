@@ -4,7 +4,7 @@ from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 # load data
-dataset = loadtxt('../Dataset/LDAData.csv', delimiter=",")
+dataset = loadtxt('Dataset/heart.data', delimiter=",")
 # split data into X and y
 X = dataset[:,0:np.array(dataset).shape[1] - 1]
 Y = dataset[:,np.array(dataset).shape[1] - 1]
