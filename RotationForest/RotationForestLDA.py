@@ -18,7 +18,6 @@ def LDA(newArray,mtx):
   columns -= 1
   rows = mtx.shape[0]
   nCol = X.shape[1]
-  Y = np.array(mtx)[:,columns]
   Mean_X1= [0 for a in range(nCol)]
   Mean_X2= [0 for b in range(nCol)]
   countX1 = 0
@@ -93,7 +92,7 @@ def LDA(newArray,mtx):
 
  
 def build_rotationtree_model(k):
-  mtx = genfromtxt('../Dataset/comb.csv', delimiter=',')
+  mtx = genfromtxt('Dataset/comb.csv', delimiter=',')
   #Length of attributes (width of matrix)
   a = mtx.shape[1] 
   a -= 1
@@ -109,7 +108,6 @@ def build_rotationtree_model(k):
   #Ending of sub matrix
   end = int(a/k)
   cond = end
-  m = 0
   n = 0
   pos = 0
   counter = 0
@@ -139,7 +137,7 @@ def build_rotationtree_model(k):
   Ycol = np.array(mtx)[:,a]
   result = result.round(decimals = 2)
   final = np.concatenate((result,Ycol.reshape(Ycol.shape[0],1).astype(int)),axis=1)
-  np.savetxt("../Dataset/LDAdata.csv",final,fmt='%10.2f',delimiter=",")
+  np.savetxt("Dataset/LDAdata.csv",final,fmt='%10.2f',delimiter=",")
   #print(final)
 
 
