@@ -9,7 +9,7 @@ def main():
 	testSet=[]
 	accuracy = 0.0
 	split = 0.25
-	loadDataset('../Dataset/LDAdata.csv', split, trainingSet, testSet)
+	loadDataset('../Dataset/phishing.data', split, trainingSet, testSet)
 	print('Train set: ' + repr(len(trainingSet)))
 	print('Test set: ' + repr(len(testSet)))
 	trainData = np.array(trainingSet)[:,0:np.array(trainingSet).shape[1] - 1]
