@@ -18,8 +18,8 @@ clf1 = GradientBoostingClassifier()
 clf2 = RandomForestClassifier(random_state=1)
 clf4 = ExtraTreesClassifier()
 xgb = XGBClassifier()
-sclf = StackingClassifier(classifiers=[clf1, clf2, clf4], 
-                          meta_classifier=xgb)
+sclf = StackingClassifier(classifiers=[clf1, xgb, clf4], 
+                          meta_classifier=clf2)
 
 print('5-fold cross validation:\n')
 
