@@ -5,6 +5,11 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from mlxtend.classifier import StackingClassifier
 from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.linear_model import RidgeClassifier
+from sklearn.naive_bayes import GaussianNB
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -14,20 +19,20 @@ dataset = np.loadtxt('../Dataset/comb.csv', delimiter=",")
 X = dataset[:,0:np.array(dataset).shape[1] - 1]
 y = dataset[:,np.array(dataset).shape[1] - 1]
 
-clf1 = GradientBoostingClassifier()
-clf2 = RandomForestClassifier(random_state=1)
-clf4 = ExtraTreesClassifier()
-xgb = XGBClassifier()
-sclf = StackingClassifier(classifiers=[clf1, xgb, clf4], 
+clf1 = LinearDiscriminantAnalysis()
+clf2 = RidgeClassifier()
+clf4 = RandomForestClassifier()
+clf3 = GaussianNB()
+sclf = StackingClassifier(classifiers=[clf1, clf3, clf4], 
                           meta_classifier=clf2)
 
-print('5-fold cross validation:\n')
+print('10-fold cross validation:\n')
 
 for clf, label in zip([clf1, clf2, clf4, sclf], 
-                      ['Gradient Boost', 
-                       'Random Forest', 
-                       'ExtraTrees Classifier',
-                       'StackingClassifier']):
-    scores = model_selection.cross_val_score(clf,X,y, cv=5, scoring='accuracy')
+                      ['LDA', 
+                       'Gaussian Naive Bayes', 
+                       'Random Forest',
+                       'Meta - Ridge Classifier']):
+    scores = model_selection.cross_val_score(clf,X,y, cv=10, scoring='accuracy')
     print("Accuracy: %0.2f (+/- %0.2f) [%s]" % (scores.mean(), scores.std(), label))
                                                  
