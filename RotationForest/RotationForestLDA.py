@@ -7,7 +7,7 @@ mtx = 0
 def main():
   float_formatter = lambda x: "%.2f" % x
   np.set_printoptions(formatter={'float_kind':float_formatter})
-  np.set_printoptions(threshold='nan')
+  np.set_printoptions(threshold=0)
   k=int(input("Enter the value for k: "))
   build_rotationtree_model(k)
 
@@ -92,7 +92,7 @@ def LDA(newArray,mtx):
 
  
 def build_rotationtree_model(k):
-  mtx = genfromtxt('Dataset/med.data', delimiter=',')
+  mtx = genfromtxt('../Dataset/ndrug/Morgan.csv', delimiter=',')
   #Length of attributes (width of matrix)
   a = mtx.shape[1] 
   a -= 1
