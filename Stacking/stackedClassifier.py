@@ -14,7 +14,7 @@ from sklearn.naive_bayes import GaussianNB
 import warnings
 warnings.filterwarnings("ignore")
 
-dataset = np.loadtxt('../Dataset/comb.csv', delimiter=",")
+dataset = np.loadtxt('../Dataset/dnd/MACCS166.csv', delimiter=",")
 # split data into X and y
 X = dataset[:,0:np.array(dataset).shape[1] - 1]
 y = dataset[:,np.array(dataset).shape[1] - 1]
