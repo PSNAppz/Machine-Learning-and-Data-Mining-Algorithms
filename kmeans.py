@@ -9,7 +9,7 @@ import seaborn as sns; sns.set()  # for plot styling
 def main():
 	# prepare data
     trainingSet = []
-    loadDataset('Dataset/kmeans.csv',trainingSet)
+    loadDataset('Dataset/dnd/MACCS166.csv',trainingSet)
     dataset=trainingSet
     X = np.array(dataset)
     kmeans = KMeans(n_clusters=2, random_state=0).fit(X)
