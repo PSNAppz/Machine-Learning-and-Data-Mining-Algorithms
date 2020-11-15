@@ -190,7 +190,7 @@ def bagging(train, test, max_depth, min_size, sample_size, n_trees):
 # Test bagging on the sonar dataset
 seed(1)
 # load and prepare data
-filename = 'Dataset/PCAdata.csv'
+filename = 'Dataset/dnd/MACCS166.csv'
 dataset = load_csv(filename)
 # convert string attributes to integers
 for i in range(len(dataset[0])-1):
