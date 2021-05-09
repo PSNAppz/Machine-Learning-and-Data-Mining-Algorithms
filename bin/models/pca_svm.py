@@ -7,8 +7,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 
-load_dotenv()
-DATASET_FOLDER = os.getenv('DATASET')
 
 COMPONENT_NUM = 2
 

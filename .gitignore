@@ -3,3 +3,4 @@ Boosting/.DS_Store
 venv/
 .DS_Store
 *.pyc
+bin/report.log
