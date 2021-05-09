@@ -9,19 +9,24 @@ nArray = 0
 mtx = 0
 
 
-DATASET_OUTPUT_FOLDER = os.getenv('DATASET_OUTPUT')
+DATASET_OUTPUT_FOLDER = None
+DATASET_FOLDER = None
+DATA = None
 
 def call_function(DATASET_FOLDER='Dataset', DATASET_OUTPUT_FOLDER='Dataset/output', DATA='Morgan.csv'):
+  DATASET_OUTPUT_FOLDER = DATASET_OUTPUT_FOLDER
+  DATASET_FOLDER = DATASET_FOLDER
+  DATA = DATA
 
-    try:
-        float_formatter = lambda x: "%.2f" % x
-        np.set_printoptions(formatter={'float_kind':float_formatter})
-        np.set_printoptions(threshold=0)
-        k=int(input("Enter the value for k: "))
-        build_rotationtree_model(k)
-    except Exception as e:
-       
-        print( "Error: %s" % e )
+  try:
+      float_formatter = lambda x: "%.2f" % x
+      np.set_printoptions(formatter={'float_kind':float_formatter})
+      np.set_printoptions(threshold=0)
+      k=int(input("Enter the value for k: "))
+      build_rotationtree_model(k, DATASET_OUTPUT_FOLDER, DATASET_FOLDER, DATA)
+  except Exception as e:
+      
+      print( "Error: %s" % e )
 
 
 def LDA(newArray,mtx):
@@ -97,13 +102,12 @@ def LDA(newArray,mtx):
       pooled[i][j] = (countX1/(countX1+countX2))*covA[i][j]+(countX2/(countX1+countX2))*covB[i][j]
   invPooled = [[0 for r in range(len(CovMat_A))] for i in range(len(CovMat_A))]
   invPooled = np.matrix(pooled).I
-  print(pooled)
   return invPooled
 
  
 
  
-def build_rotationtree_model(k):
+def build_rotationtree_model(k, DATASET_OUTPUT_FOLDER, DATASET_FOLDER, DATA):
   mtx = genfromtxt("/".join([DATASET_FOLDER, DATA]), delimiter=',')
   #Length of attributes (width of matrix)
   a = mtx.shape[1] 
@@ -150,6 +154,8 @@ def build_rotationtree_model(k):
   result = result.round(decimals = 2)
   final = np.concatenate((result,Ycol.reshape(Ycol.shape[0],1).astype(int)),axis=1)
   np.savetxt("/".join([DATASET_OUTPUT_FOLDER, 'LDAdata.csv']),final,fmt='%10.2f',delimiter=",")
+  print("Output saved to:",DATASET_OUTPUT_FOLDER,"/LDAdata.csv")
+
   #print(final)
 
 

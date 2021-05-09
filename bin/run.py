@@ -29,121 +29,121 @@ from models import (svm,\
 div.divider()
 
 # calls SVM model
-print("SVM model : ")
-svm.call_function(DATA='Morgan.csv')
+# print("SVM model : ")
+# svm.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-# calls random forest model
-print("Random Forest model : ")
-random_forest.call_function(DATA='Morgan.csv')
+# print("XGBoost model : ")
+# xgboost.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-# calls random forest model
-print("QDA model : ")
-qda.call_function(DATA='Morgan.csv')
+# # calls random forest model
+# print("Random Forest model : ")
+# random_forest.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("PCA & SVM model : ")
-pca_svm.call_function(DATA='Morgan.csv')
+# # calls random forest model
+# print("QDA model : ")
+# qda.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Naive Bayes model : ")
-naive_bayes.call_function(DATA='Morgan.csv')
+# print("PCA & SVM model : ")
+# pca_svm.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Naive model : ")
-naive.call_function(DATA='Morgan.csv')
+# print("Naive Bayes model : ")
+# naive_bayes.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("LDA Classifier model : ")
-lda_classifier.call_function(DATA='Morgan.csv')
+# # print("Naive model : ")
+# # naive.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("KMeans model : ")
-kmeans.call_function(DATA='Morgan.csv')
+# print("LDA Classifier model : ")
+# lda_classifier.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Decision Tree model : ")
-decisiontree.call_function(DATA='Morgan.csv')
+# # print("KMeans model : ")
+# # kmeans.call_function(DATA='sonar.data')
 
-div.divider()
+# # div.divider()
 
-print("Stacked model : ")
-stacking_scratch.call_function(DATA='Morgan.csv')
+# print("Decision Tree model : ")
+# decisiontree.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Stacked model : ")
-stacked_classifier.call_function(DATA='Morgan.csv')
+# print("Stacked model : ")
+# stacking_scratch.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
+
+# print("Stacked model : ")
+# stacked_classifier.call_function(DATA='sonar.data')
+
+# div.divider()
 
 print("Rotation Forest PCA model : ")
-rotation_forest_pca.call_function(DATA='Morgan.csv')
+rotation_forest_pca.call_function(DATA='sonar.data')
 
 div.divider()
 
 print("Rotation Forest LDA model : ")
-rotation_forest_lda.call_function(DATA='Morgan.csv')
+rotation_forest_lda.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("KNN model : ")
-knn.call_function(DATA='Morgan.csv')
+# print("KNN model : ")
+# knn.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Feature Selection RFE model : ")
-rfe.call_function(DATA='Morgan.csv')
+# print("Feature Selection RFE model : ")
+# rfe.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Feature Selection Random Forest model : ")
-randomforest_fs.call_function(DATA='Morgan.csv')
+# print("Feature Selection Random Forest model : ")
+# randomforest_fs.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Feature Selection BPSO model : ")
-bpso.call_function(DATA='Morgan.csv')
+# print("Feature Selection BPSO model : ")
+# bpso.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("XGBoost model : ")
-xgboost.call_function(DATA='Morgan.csv')
+# print("Gradient Boosting model : ")
+# gradient_boosting.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Gradient Boosting model : ")
-gradient_boosting.call_function(DATA='Morgan.csv')
+# print("AdaBoosting model : ")
+# ada_boosting.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("AdaBoosting model : ")
-ada_boosting.call_function(DATA='Morgan.csv')
+# print("Bagged SVM model : ")
+# bagged_svm.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Bagged SVM model : ")
-bagged_svm.call_function(DATA='Morgan.csv')
+# print("Bagged QDA model : ")
+# bagged_qda.call_function(DATA='sonar.data')
 
-div.divider()
+# div.divider()
 
-print("Bagged QDA model : ")
-bagged_qda.call_function(DATA='Morgan.csv')
+# print("Bagged LDA model : ")
+# bagged_lda.call_function(DATA='sonar.data')
+# div.divider()
 
-div.divider()
-
-print("Bagged LDA model : ")
-bagged_lda.call_function(DATA='Morgan.csv')
-div.divider()
-
-print("Bagged KNN model : ")
-bagged_knn.call_function(DATA='Morgan.csv')
+# print("Bagged KNN model : ")
+# bagged_knn.call_function(DATA='sonar.data')
